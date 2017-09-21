@@ -3,7 +3,7 @@
 
 import 'dart:html';
 import 'dart:math';
-import '../lib/setalpha.dart';
+import 'package:setalpha/src/setalpha_base.dart';
 
 main() {
   var rand = new Random();
@@ -22,8 +22,6 @@ main() {
       ..translate(x, y)
       ..beginPath()
       ..arc(0, 0, radius, 0, 2 * PI)
-      //..fillStyle = "white"
-      //..fill()
       ..fillStyle = fill
       ..fill()
       ..stroke()
