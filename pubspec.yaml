@@ -1,6 +1,6 @@
 name: setalpha
-description: A starting point for Dart libraries or applications.
-version: 0.5.0
+description: A convenient way to set the alpha level of css colors.
+version: 0.5.1
 homepage: https://ram6ler@bitbucket.org/ram6ler/setalpha
 author: Richard Ambler <rambler@ibwya.net.com>
 
