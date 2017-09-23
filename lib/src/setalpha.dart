@@ -15,6 +15,7 @@ part of setalpha;
 String setAlpha(String color, [num alpha = 1]) {
   String rgbHex;
   if (color.contains("rgb")) {
+    // red-green-blue
     rgbHex = color
         .replaceAll(new RegExp(r"[^0-9,]"), "")
         .split(",")
@@ -26,9 +27,71 @@ String setAlpha(String color, [num alpha = 1]) {
       else
         return hex;
     }).join();
+  } else if (color.contains("hsl")) {
+    // hue-saturation-lightness
+    List<num> split = color
+        .replaceAll(new RegExp(r"[^0-9,%]"), "")
+        .split(",")
+        .map((x) => x.contains("%")
+            ? num.parse(x.replaceAll(new RegExp(r"[^0-9]"), "")) / 100
+            : num.parse(x))
+        .toList();
+    num hue = split[0],
+        saturation = split[1],
+        lightness = split[2],
+        chroma = (1 - (2 * lightness - 1).abs()) * saturation,
+        h = hue / 60,
+        hfloor = h.floor(),
+        x = chroma * (1 - (h % 2 - 1).abs()),
+        m = lightness - chroma / 2,
+        r1,
+        g1,
+        b1;
+    switch (hfloor) {
+      case 0:
+        r1 = chroma;
+        g1 = x;
+        b1 = 0;
+        break;
+      case 1:
+        r1 = x;
+        g1 = chroma;
+        b1 = 0;
+        break;
+      case 2:
+        r1 = 0;
+        g1 = chroma;
+        b1 = x;
+        break;
+      case 3:
+        r1 = 0;
+        g1 = x;
+        b1 = chroma;
+        break;
+      case 4:
+        r1 = x;
+        g1 = 0;
+        b1 = chroma;
+        break;
+      case 5:
+        r1 = chroma;
+        g1 = 0;
+        b1 = x;
+        break;
+      default:
+        r1 = 0;
+        g1 = 0;
+        b1 = 0;
+        break;
+    }
+    String toHex(num x) =>
+        ((x + m) * 255).round().toRadixString(16).padLeft(2, "0");
+    rgbHex = [r1, g1, b1].map(toHex).join("");
   } else if (color[0] == "#") {
+    // hex
     rgbHex = color.replaceAll(new RegExp(r"[^A-Fa-f0-9]"), "");
   } else {
+    // assumed color name
     rgbHex = Color._colorData[color];
   }
   String sixDigitRgbHex = rgbHex.length == 3

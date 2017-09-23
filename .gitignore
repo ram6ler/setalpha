@@ -10,3 +10,6 @@ doc/api/
 
 # Mac
 .DS_Store
+
+# Test snips
+test/test-snip.txt

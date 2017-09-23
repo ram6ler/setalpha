@@ -4,6 +4,7 @@
 import 'dart:html';
 import 'dart:math';
 import 'package:setalpha/src/setalpha_base.dart';
+//import "../lib/setalpha.dart";
 
 main() {
   var rand = new Random();

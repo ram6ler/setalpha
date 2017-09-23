@@ -18,6 +18,9 @@ void main() {
   
   // Or a CSS hex value...
   assert(setAlpha("#add8e6", 0.5) == desiredResult);
+
+  // Or a CSS hsl value...
+  assert(setAlpha("hsl(195, 53%, 79%)", 0.5) == desiredResult);
   
   // Or a CSS rgb expression...
   assert(setAlpha("rgb(173,216,230)", 0.5) == desiredResult);

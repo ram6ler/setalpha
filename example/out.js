@@ -781,6 +781,28 @@
     },
     JSNumber: {
       "^": "Interceptor;",
+      floor$0: function(receiver) {
+        var truncated, d;
+        if (receiver >= 0) {
+          if (receiver <= 2147483647)
+            return receiver | 0;
+        } else if (receiver >= -2147483648) {
+          truncated = receiver | 0;
+          return receiver === truncated ? truncated : truncated - 1;
+        }
+        d = Math.floor(receiver);
+        if (isFinite(d))
+          return d;
+        throw H.wrapException(new P.UnsupportedError("" + receiver + ".floor()"));
+      },
+      round$0: function(receiver) {
+        if (receiver > 0) {
+          if (receiver !== 1 / 0)
+            return Math.round(receiver);
+        } else if (receiver > -1 / 0)
+          return 0 - Math.round(0 - receiver);
+        throw H.wrapException(new P.UnsupportedError("" + receiver + ".round()"));
+      },
       toRadixString$1: function(receiver, radix) {
         var result, match, t1, exponent;
         if (radix < 2 || radix > 36)
@@ -813,6 +835,22 @@
         if (typeof other !== "number")
           throw H.wrapException(H.argumentErrorValue(other));
         return receiver + other;
+      },
+      $mul: function(receiver, other) {
+        if (typeof other !== "number")
+          throw H.wrapException(H.argumentErrorValue(other));
+        return receiver * other;
+      },
+      $mod: function(receiver, other) {
+        var result = receiver % other;
+        if (result === 0)
+          return 0;
+        if (result > 0)
+          return result;
+        if (other < 0)
+          return result - other;
+        else
+          return result + other;
       },
       _tdivFast$1: function(receiver, other) {
         return (receiver | 0) === receiver ? receiver / other | 0 : this._tdivSlow$1(receiver, other);
@@ -898,6 +936,24 @@
       substring$1: function($receiver, startIndex) {
         return this.substring$2($receiver, startIndex, null);
       },
+      trim$0: function(receiver) {
+        var result, endIndex, startIndex, t1, endIndex0;
+        result = receiver.trim();
+        endIndex = result.length;
+        if (endIndex === 0)
+          return result;
+        if (this._codeUnitAt$1(result, 0) === 133) {
+          startIndex = J.JSString__skipLeadingWhitespace(result, 1);
+          if (startIndex === endIndex)
+            return "";
+        } else
+          startIndex = 0;
+        t1 = endIndex - 1;
+        endIndex0 = this.codeUnitAt$1(result, t1) === 133 ? J.JSString__skipTrailingWhitespace(result, t1) : endIndex;
+        if (startIndex === 0 && endIndex0 === endIndex)
+          return result;
+        return result.substring(startIndex, endIndex0);
+      },
       $mul: function(receiver, times) {
         var s, result;
         if (0 >= times)
@@ -915,6 +971,12 @@
           s += s;
         }
         return result;
+      },
+      padLeft$2: function(receiver, width, padding) {
+        var delta = width - receiver.length;
+        if (delta <= 0)
+          return receiver;
+        return this.$mul(padding, delta) + receiver;
       },
       contains$2: function(receiver, other, startIndex) {
         if (startIndex > receiver.length)
@@ -950,7 +1012,68 @@
       },
       $isJSIndexable: 1,
       $asJSIndexable: Isolate.functionThatReturnsNull,
-      $isString: 1
+      $isString: 1,
+      static: {
+        JSString__isWhitespace: function(codeUnit) {
+          if (codeUnit < 256)
+            switch (codeUnit) {
+              case 9:
+              case 10:
+              case 11:
+              case 12:
+              case 13:
+              case 32:
+              case 133:
+              case 160:
+                return true;
+              default:
+                return false;
+            }
+          switch (codeUnit) {
+            case 5760:
+            case 8192:
+            case 8193:
+            case 8194:
+            case 8195:
+            case 8196:
+            case 8197:
+            case 8198:
+            case 8199:
+            case 8200:
+            case 8201:
+            case 8202:
+            case 8232:
+            case 8233:
+            case 8239:
+            case 8287:
+            case 12288:
+            case 65279:
+              return true;
+            default:
+              return false;
+          }
+        },
+        JSString__skipLeadingWhitespace: function(string, index) {
+          var t1, codeUnit;
+          for (t1 = string.length; index < t1;) {
+            codeUnit = C.JSString_methods._codeUnitAt$1(string, index);
+            if (codeUnit !== 32 && codeUnit !== 13 && !J.JSString__isWhitespace(codeUnit))
+              break;
+            ++index;
+          }
+          return index;
+        },
+        JSString__skipTrailingWhitespace: function(string, index) {
+          var index0, codeUnit;
+          for (; index > 0; index = index0) {
+            index0 = index - 1;
+            codeUnit = C.JSString_methods.codeUnitAt$1(string, index0);
+            if (codeUnit !== 32 && codeUnit !== 13 && !J.JSString__isWhitespace(codeUnit))
+              break;
+          }
+          return index;
+        }
+      }
     }
   }], ["dart._internal", "dart:_internal",, H, {
     "^": "",
@@ -2168,7 +2291,9 @@
       return hash;
     },
     Primitives__parseIntError: function(source, handleError) {
-      throw H.wrapException(new P.FormatException(source, null, null));
+      if (handleError == null)
+        throw H.wrapException(new P.FormatException(source, null, null));
+      return handleError.call$1(source);
     },
     Primitives_parseInt: function(source, radix, handleError) {
       var match, decimalMatch, maxCharCode, digitsPart, t1, i;
@@ -2198,6 +2323,22 @@
             return H.Primitives__parseIntError(source, handleError);
       }
       return parseInt(source, radix);
+    },
+    Primitives__parseDoubleError: function(source, handleError) {
+      return handleError.call$1(source);
+    },
+    Primitives_parseDouble: function(source, handleError) {
+      var result, trimmed;
+      if (!/^\s*[+-]?(?:Infinity|NaN|(?:\.\d+|\d+(?:\.\d*)?)(?:[eE][+-]?\d+)?)\s*$/.test(source))
+        return H.Primitives__parseDoubleError(source, handleError);
+      result = parseFloat(source);
+      if (isNaN(result)) {
+        trimmed = C.JSString_methods.trim$0(source);
+        if (trimmed === "NaN" || trimmed === "+NaN" || trimmed === "-NaN")
+          return result;
+        return H.Primitives__parseDoubleError(source, handleError);
+      }
+      return result;
     },
     Primitives_objectTypeName: function(object) {
       var interceptor, interceptorConstructor, interceptorConstructorName, $name, dispatchName, objectConstructor, match, decompiledName;
@@ -4148,7 +4289,7 @@
       P._rootScheduleMicrotask(null, null, currentZone, currentZone.bindCallback$2$runGuarded(callback, true));
     },
     _nullDataHandler: [function(value) {
-    }, "call$1", "async___nullDataHandler$closure", 2, 0, 15],
+    }, "call$1", "async___nullDataHandler$closure", 2, 0, 16],
     _nullErrorHandler: [function(error, stackTrace) {
       var t1 = $.Zone__current;
       t1.toString;
@@ -6035,6 +6176,23 @@
       }
       return result;
     },
+    num_parse: function(input, onError) {
+      var source, result;
+      source = J.trim$0$s(input);
+      result = H.Primitives_parseInt(source, null, P.core_num__returnIntNull$closure());
+      if (result != null)
+        return result;
+      result = H.Primitives_parseDouble(source, P.core_num__returnDoubleNull$closure());
+      if (result != null)
+        return result;
+      throw H.wrapException(new P.FormatException(input, null, null));
+    },
+    num__returnIntNull: [function(_) {
+      return;
+    }, "call$1", "core_num__returnIntNull$closure", 2, 0, 17],
+    num__returnDoubleNull: [function(_) {
+      return;
+    }, "call$1", "core_num__returnDoubleNull$closure", 2, 0, 18],
     print: function(object) {
       H.printString(H.S(object));
     },
@@ -6050,9 +6208,12 @@
     },
     "+double": 0,
     Duration: {
-      "^": "Object;_duration",
+      "^": "Object;_duration<",
       $add: function(_, other) {
-        return new P.Duration(C.JSInt_methods.$add(this._duration, other.get$_duration()));
+        return new P.Duration(this._duration + other.get$_duration());
+      },
+      $mul: function(_, factor) {
+        return new P.Duration(C.JSInt_methods.round$0(this._duration * factor));
       },
       $lt: function(_, other) {
         return C.JSInt_methods.$lt(this._duration, other.get$_duration());
@@ -7181,20 +7342,83 @@
   }], ["setalpha", "package:setalpha/src/setalpha_base.dart",, T, {
     "^": "",
     setAlpha: function(color, alpha) {
-      var t1, rgbHex, sixDigitRgbHex;
+      var t1, rgbHex, split, hue, saturation, lightness, chroma, h, hfloor, x, g1, r1, b1, sixDigitRgbHex;
       t1 = J.getInterceptor$asx(color);
       if (t1.contains$1(color, "rgb") === true) {
         t1 = C.JSArray_methods.sublist$2(t1.replaceAll$2(color, P.RegExp_RegExp("[^0-9,]", true, false), "").split(","), 0, 3);
         rgbHex = new H.MappedListIterable(t1, new T.setAlpha_closure(), [H.getTypeArgumentByIndex(t1, 0), null]).join$0(0);
+      } else if (t1.contains$1(color, "hsl") === true) {
+        t1 = t1.replaceAll$2(color, P.RegExp_RegExp("[^0-9,%]", true, false), "").split(",");
+        split = new H.MappedListIterable(t1, new T.setAlpha_closure0(), [H.getTypeArgumentByIndex(t1, 0), null]).toList$0(0);
+        t1 = split.length;
+        if (0 >= t1)
+          return H.ioore(split, 0);
+        hue = split[0];
+        if (1 >= t1)
+          return H.ioore(split, 1);
+        saturation = split[1];
+        if (2 >= t1)
+          return H.ioore(split, 2);
+        lightness = split[2];
+        if (typeof lightness !== "number")
+          return H.iae(lightness);
+        if (typeof saturation !== "number")
+          return H.iae(saturation);
+        chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+        if (typeof hue !== "number")
+          return hue.$div();
+        h = hue / 60;
+        hfloor = C.JSDouble_methods.floor$0(h);
+        x = chroma * (1 - Math.abs(C.JSDouble_methods.$mod(h, 2) - 1));
+        switch (hfloor) {
+          case 0:
+            g1 = x;
+            r1 = chroma;
+            b1 = 0;
+            break;
+          case 1:
+            g1 = chroma;
+            r1 = x;
+            b1 = 0;
+            break;
+          case 2:
+            b1 = x;
+            g1 = chroma;
+            r1 = 0;
+            break;
+          case 3:
+            b1 = chroma;
+            g1 = x;
+            r1 = 0;
+            break;
+          case 4:
+            b1 = chroma;
+            r1 = x;
+            g1 = 0;
+            break;
+          case 5:
+            b1 = x;
+            r1 = chroma;
+            g1 = 0;
+            break;
+          default:
+            r1 = 0;
+            g1 = 0;
+            b1 = 0;
+            break;
+        }
+        t1 = [r1, g1, b1];
+        rgbHex = new H.MappedListIterable(t1, new T.setAlpha_toHex(lightness - chroma / 2), [H.getTypeArgumentByIndex(t1, 0), null]).join$1(0, "");
+        P.print(H.S(r1) + ", " + H.S(g1) + ", " + H.S(b1) + ": " + rgbHex);
       } else
         rgbHex = J.$eq$(t1.$index(color, 0), "#") ? t1.replaceAll$2(color, P.RegExp_RegExp("[^A-Fa-f0-9]", true, false), "") : C.Map_FCmdn.$index(0, color);
       t1 = J.getInterceptor$asx(rgbHex);
       if (t1.get$length(rgbHex) === 3) {
         t1 = t1.split$1(rgbHex, "");
-        sixDigitRgbHex = new H.MappedListIterable(t1, new T.setAlpha_closure0(), [H.getTypeArgumentByIndex(t1, 0), null]).join$0(0);
+        sixDigitRgbHex = new H.MappedListIterable(t1, new T.setAlpha_closure1(), [H.getTypeArgumentByIndex(t1, 0), null]).join$0(0);
       } else
         sixDigitRgbHex = t1.substring$2(rgbHex, 0, 6);
-      return "rgba(" + C.JSArray_methods.join$1(P.List_List$generate(3, new T.setAlpha_closure1(sixDigitRgbHex), true, P.int), ",") + "," + H.S(alpha) + ")";
+      return "rgba(" + C.JSArray_methods.join$1(P.List_List$generate(3, new T.setAlpha_closure2(sixDigitRgbHex), true, P.int), ",") + "," + H.S(alpha) + ")";
     },
     setAlpha_closure: {
       "^": "Closure:2;",
@@ -7209,10 +7433,30 @@
     setAlpha_closure0: {
       "^": "Closure:2;",
       call$1: function(x) {
-        return H.S(x) + H.S(x);
+        var t1 = J.getInterceptor$asx(x);
+        if (t1.contains$1(x, "%") === true) {
+          t1 = P.num_parse(t1.replaceAll$2(x, P.RegExp_RegExp("[^0-9]", true, false), ""), null);
+          if (typeof t1 !== "number")
+            return t1.$div();
+          t1 /= 100;
+        } else
+          t1 = P.num_parse(x, null);
+        return t1;
+      }
+    },
+    setAlpha_toHex: {
+      "^": "Closure:14;m",
+      call$1: function(x) {
+        return C.JSString_methods.padLeft$2(C.JSInt_methods.toRadixString$1(J.round$0$n(J.$mul$ns(J.$add$ns(x, this.m), 255)), 16), 2, "0");
       }
     },
     setAlpha_closure1: {
+      "^": "Closure:2;",
+      call$1: function(x) {
+        return H.S(x) + H.S(x);
+      }
+    },
+    setAlpha_closure2: {
       "^": "Closure:2;sixDigitRgbHex",
       call$1: function(i) {
         return H.Primitives_parseInt(C.JSString_methods.substring$2(this.sixDigitRgbHex, i * 2, (i + 1) * 2), 16, null);
@@ -7242,7 +7486,7 @@
       C.Window_methods.get$animationFrame(window).then$1(t3);
     }, "call$0", "setalpha_example__main$closure", 0, 0, 0],
     main_addBubbles: {
-      "^": "Closure:14;_box_0,rand,width,height,canvas",
+      "^": "Closure:15;_box_0,rand,width,height,canvas",
       call$1: function(_) {
         var t1, t2, t3, stroke, fill, x, y;
         t1 = C.Map_FCmdn.get$keys();
@@ -7378,6 +7622,15 @@
       return J.UnknownJavaScriptObject.prototype;
     return receiver;
   };
+  J.getInterceptor$s = function(receiver) {
+    if (typeof receiver == "string")
+      return J.JSString.prototype;
+    if (receiver == null)
+      return receiver;
+    if (!(receiver instanceof P.Object))
+      return J.UnknownJavaScriptObject.prototype;
+    return receiver;
+  };
   J.getInterceptor$x = function(receiver) {
     if (receiver == null)
       return receiver;
@@ -7419,6 +7672,11 @@
       return receiver < a0;
     return J.getInterceptor$n(receiver).$lt(receiver, a0);
   };
+  J.$mul$ns = function(receiver, a0) {
+    if (typeof receiver == "number" && typeof a0 == "number")
+      return receiver * a0;
+    return J.getInterceptor$ns(receiver).$mul(receiver, a0);
+  };
   J._addEventListener$3$x = function(receiver, a0, a1, a2) {
     return J.getInterceptor$x(receiver)._addEventListener$3(receiver, a0, a1, a2);
   };
@@ -7434,8 +7692,14 @@
   J.map$1$ax = function(receiver, a0) {
     return J.getInterceptor$ax(receiver).map$1(receiver, a0);
   };
+  J.round$0$n = function(receiver) {
+    return J.getInterceptor$n(receiver).round$0(receiver);
+  };
   J.toRadixString$1$n = function(receiver, a0) {
     return J.getInterceptor$n(receiver).toRadixString$1(receiver, a0);
+  };
+  J.trim$0$s = function(receiver) {
+    return J.getInterceptor$s(receiver).trim$0(receiver);
   };
   J.get$hashCode$ = function(receiver) {
     return J.getInterceptor(receiver).get$hashCode(receiver);
@@ -7458,6 +7722,7 @@
   var $ = Isolate.$isolateProperties;
   C.Interceptor_methods = J.Interceptor.prototype;
   C.JSArray_methods = J.JSArray.prototype;
+  C.JSDouble_methods = J.JSDouble.prototype;
   C.JSInt_methods = J.JSInt.prototype;
   C.JSNumber_methods = J.JSNumber.prototype;
   C.JSString_methods = J.JSString.prototype;
@@ -7718,7 +7983,7 @@
   Isolate = Isolate.$finishIsolateConstructor(Isolate);
   $ = new Isolate();
   init.metadata = [];
-  init.types = [{func: 1}, {func: 1, v: true}, {func: 1, args: [,]}, {func: 1, v: true, args: [{func: 1, v: true}]}, {func: 1, v: true, args: [P.Object], opt: [P.StackTrace]}, {func: 1, ret: P.String, args: [P.int]}, {func: 1, args: [, P.String]}, {func: 1, args: [P.String]}, {func: 1, args: [{func: 1, v: true}]}, {func: 1, args: [,], opt: [,]}, {func: 1, args: [P.bool]}, {func: 1, args: [, P.StackTrace]}, {func: 1, v: true, args: [, P.StackTrace]}, {func: 1, args: [,,]}, {func: 1, v: true, args: [,]}, {func: 1, v: true, args: [P.Object]}];
+  init.types = [{func: 1}, {func: 1, v: true}, {func: 1, args: [,]}, {func: 1, v: true, args: [{func: 1, v: true}]}, {func: 1, v: true, args: [P.Object], opt: [P.StackTrace]}, {func: 1, ret: P.String, args: [P.int]}, {func: 1, args: [, P.String]}, {func: 1, args: [P.String]}, {func: 1, args: [{func: 1, v: true}]}, {func: 1, args: [,], opt: [,]}, {func: 1, args: [P.bool]}, {func: 1, args: [, P.StackTrace]}, {func: 1, v: true, args: [, P.StackTrace]}, {func: 1, args: [,,]}, {func: 1, ret: P.String, args: [P.num]}, {func: 1, v: true, args: [,]}, {func: 1, v: true, args: [P.Object]}, {func: 1, ret: P.int, args: [P.String]}, {func: 1, ret: P.double, args: [P.String]}];
   function convertToFastObject(properties) {
     function MyClass() {
     }
