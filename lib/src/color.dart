@@ -302,4 +302,33 @@ abstract class Color {
   };
 
   static List<String> get allColors => _colorData.keys.toList();
+
+  /// Returns the name of the css color nearest the input rgb values.
+  ///
+  /// Returns the css color that is nearest in rgb space,
+  /// using Euclidean distance as a measure, to the point
+  /// with the rgb coordinates ([red], [green], [blue]).
+  ///
+  /// Example:
+  ///
+  ///     print(Color.nearest(145, 138, 236));
+  ///     // cornflowerblue
+  ///
+  static String nearest(num red, num green, num blue) {
+    num minIndex = 0, minSquareDistance = double.INFINITY;
+    for (int i = 0; i < _colorData.length; i++) {
+      String hex = _colorData.values.elementAt(i);
+      num r = int.parse(hex.substring(0, 2), radix: 16),
+          g = int.parse(hex.substring(2, 4), radix: 16),
+          b = int.parse(hex.substring(4, 6), radix: 16);
+      num squareDistance = (red - r) * (red - r) +
+          (green - g) * (green - g) +
+          (blue - b) * (blue - b);
+      if (minSquareDistance > squareDistance) {
+        minSquareDistance = squareDistance;
+        minIndex = i;
+      }
+    }
+    return _colorData.keys.elementAt(minIndex);
+  }
 }

@@ -27,6 +27,10 @@ void main() {
   
   // Or using the convenience class Color...
   assert(setAlpha(Color.lightBlue, 0.5) == desiredResult);
+
+  // What is the css color nearest in rgb space to the
+  // rgb coordinates (145, 138, 236)?
+  assert(Color.nearest(145, 138, 236) == "cornflowerblue");
 }
 ```
 

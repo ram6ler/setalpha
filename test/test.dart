@@ -1,3 +1,4 @@
+import 'dart:math' show Random;
 import 'package:setalpha/setalpha.dart';
 
 void main() {
@@ -18,4 +19,14 @@ void main() {
 
   // Or using the convenience class Color...
   print(setAlpha(Color.lightBlue, 0.5) == desiredResult);
+
+  var rand = new Random();
+  for (int i = 0; i < 100; i++) {
+    num r = rand.nextInt(256), g = rand.nextInt(256), b = rand.nextInt(256);
+    print(
+        "<div style='background: rgb($r,$g,$b); width: 100px; height: 100px;'></div>");
+    print(
+        "<div style='background: ${Color.nearest(r, g, b)}; width: 100px; height: 100px;'></div>");
+    print("<br>");
+  }
 }
