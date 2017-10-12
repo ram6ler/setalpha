@@ -1,6 +1,6 @@
 name: setalpha
-description: A convenient way to set the alpha level of css colors.
-version: 0.7.0
+description: A convenient way to play around with css colors.
+version: 0.8.0
 homepage: https://ram6ler@bitbucket.org/ram6ler/setalpha
 author: Richard Ambler <rambler@ibwya.net.com>
 

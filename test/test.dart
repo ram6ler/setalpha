@@ -20,6 +20,15 @@ void main() {
   // Or using the convenience class Color...
   print(setAlpha(Color.lightBlue, 0.5) == desiredResult);
 
+  // Mixes
+  int squares = 100;
+  for (int i = 0; i < squares; i++) {
+    String mix = Color
+        .mix([Color.blue, Color.red], [i, squares - i], nearestCssColor: false);
+    print("<div style='background: $mix; width: 100px; height: 5px;'></div>");
+  }
+
+  // Random nearest colors.
   var rand = new Random();
   for (int i = 0; i < 100; i++) {
     num r = rand.nextInt(256), g = rand.nextInt(256), b = rand.nextInt(256);

@@ -12,3 +12,7 @@ Now also supports hsl expressions as input to function `setAlpha`.
 ## 0.7.0
 
 Added the function `Color.nearest`, which returns the css color nearest in rgb space to input rgb values.
+
+## 0.8.0
+
+Added the function `Color.mix`, which allows us to mix a list of colors.

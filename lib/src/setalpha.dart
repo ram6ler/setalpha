@@ -2,15 +2,14 @@ part of setalpha;
 
 /// Returns a CSS color with a set [alpha].
 ///
-/// Takes in a legal css [color] ("violet", "#abc", "rgb(100,50,20)", etc.)
-/// and a desired [alpha] level, and returns
+/// Takes in a legal css [color] (e.g. "violet", "#abc", "rgb(100,50,20)",
+/// "hsl(195, 53%, 79%)") and returns a css rgba color expression.]
 ///
 /// Example:
 ///
 ///     String col1 = Color.setAlpha(Color.violet, 0.3),
 ///       col2 = Color.setAlpha("violet", 0.3),
 ///       col3 = Color.setAlpha("rbg(238,130,238)", 0.3);
-///     // col1, col2 and col3 are all "rgba(238,130,238,0.3)".
 ///
 String setAlpha(String color, [num alpha = 1]) {
   String rgbHex;
