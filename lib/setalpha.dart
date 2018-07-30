@@ -4,4 +4,6 @@
 library setalpha;
 
 part 'src/color.dart';
-part 'src/setalpha.dart';
+part 'src/set-alpha.dart';
+part 'src/color-nearest-rgb.dart';
+part 'src/color-mix.dart';

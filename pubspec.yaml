@@ -1,11 +1,9 @@
 name: setalpha
-description: A convenient way to play around with css colors.
-version: 0.8.0
+description: A convenience package for setting and accessing web colors, adjusting the alpha levels of given colors and mixing new colors.
+version: 0.9.0
 homepage: https://ram6ler@bitbucket.org/ram6ler/setalpha
 author: Richard Ambler <rambler@ibwya.net.com>
 
 environment:
-  sdk: '>=1.20.1 <2.0.0'
+  sdk: '>=2.0.0-dev.69.4 <3.0.0'
 
-dev_dependencies:
-  test: ^0.12.0

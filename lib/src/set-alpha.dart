@@ -7,19 +7,15 @@ part of setalpha;
 ///
 /// Example:
 ///
-///     String col1 = Color.setAlpha(Color.violet, 0.3),
-///       col2 = Color.setAlpha("violet", 0.3),
-///       col3 = Color.setAlpha("rbg(238,130,238)", 0.3);
+///     String col1 = setAlpha(Color.violet, 0.3),
+///       col2 = setAlpha("violet", 0.3),
+///       col3 = setAlpha("rbg(238,130,238)", 0.3);
 ///
 String setAlpha(String color, [num alpha = 1]) {
   String rgbHex;
   if (color.contains("rgb")) {
     // red-green-blue
-    rgbHex = color
-        .replaceAll(new RegExp(r"[^0-9,]"), "")
-        .split(",")
-        .sublist(0, 3)
-        .map((x) {
+    rgbHex = color.replaceAll(RegExp(r"[^0-9,]"), "").split(",").sublist(0, 3).map((x) {
       String hex = int.parse(x).toRadixString(16);
       if (hex.length == 1)
         return "0$hex";
@@ -29,11 +25,10 @@ String setAlpha(String color, [num alpha = 1]) {
   } else if (color.contains("hsl")) {
     // hue-saturation-lightness
     List<num> split = color
-        .replaceAll(new RegExp(r"[^0-9,%]"), "")
+        .replaceAll(RegExp(r"[^0-9,%]"), "")
         .split(",")
-        .map((x) => x.contains("%")
-            ? num.parse(x.replaceAll(new RegExp(r"[^0-9]"), "")) / 100
-            : num.parse(x))
+        .map((x) =>
+            x.contains("%") ? num.parse(x.replaceAll(RegExp(r"[^0-9]"), "")) / 100 : num.parse(x))
         .toList();
     num hue = split[0],
         saturation = split[1],
@@ -83,23 +78,19 @@ String setAlpha(String color, [num alpha = 1]) {
         b1 = 0;
         break;
     }
-    String toHex(num x) =>
-        ((x + m) * 255).round().toRadixString(16).padLeft(2, "0");
+    String toHex(num x) => ((x + m) * 255).round().toRadixString(16).padLeft(2, "0");
     rgbHex = [r1, g1, b1].map(toHex).join("");
   } else if (color[0] == "#") {
     // hex
-    rgbHex = color.replaceAll(new RegExp(r"[^A-Fa-f0-9]"), "");
+    rgbHex = color.replaceAll(RegExp(r"[^A-Fa-f0-9]"), "");
   } else {
     // assumed color name
     rgbHex = Color._colorData[color];
   }
-  String sixDigitRgbHex = rgbHex.length == 3
-      ? rgbHex.split("").map((x) => "$x$x").join()
-      : rgbHex.substring(0, 6);
+  String sixDigitRgbHex =
+      rgbHex.length == 3 ? rgbHex.split("").map((x) => "$x$x").join() : rgbHex.substring(0, 6);
 
-  var rgb = new List<int>.generate(
-      3,
-      (i) =>
-          int.parse(sixDigitRgbHex.substring(i * 2, (i + 1) * 2), radix: 16));
+  var rgb = List<int>.generate(
+      3, (i) => int.parse(sixDigitRgbHex.substring(i * 2, (i + 1) * 2), radix: 16));
   return "rgba(${rgb.join(",")},$alpha)";
 }
