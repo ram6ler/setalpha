@@ -3,7 +3,9 @@
 ## 0.9.0
 
 - Marked as ready for Dart 2.
-- Removed methods from abstract class `Color`: free-standing functions are more convenient. (This is a breaking change.)
+- Removed methods from abstract class `Color`: free-standing functions `setAlpha`, `colorMix` and `colorNearestRGB` are more convenient. (This is a breaking change.)
+- Output of `setAlpha` now an 8 digit hex value, matching the output of `colorMix`.
+- Added an abstract `ColorProperty` class that provides access to various qualities of an input color such as *hue*, *saturation* and *lightness*.
 
 ## 0.8.0
 
@@ -13,13 +15,9 @@ Added the function `Color.mix`, which allows us to mix a list of colors.
 
 Added the function `Color.nearest`, which returns the css color nearest in rgb space to input rgb values.
 
-
-
 ## 0.6.0
 
 Now also supports hsl expressions as input to function `setAlpha`.
-
-
 
 ## 0.5.0
 
