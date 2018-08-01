@@ -7,7 +7,8 @@ part of setalpha;
 ///     // Two parts blue to one part red:
 ///     String mix = colorMix([Color.blue, Color.red], [2, 1]);
 ///
-String colorMix(List<String> colors, List<num> weights, {bool nearestCssColor: false}) {
+String colorMix(List<String> colors, List<num> weights,
+    {bool nearestCssColor: false}) {
   if (weights.length != colors.length)
     throw Exception("A weight should be provided for each color.");
 
@@ -15,15 +16,18 @@ String colorMix(List<String> colors, List<num> weights, {bool nearestCssColor: f
 
   List<List<num>> components = colors
       .map(setAlpha)
-      .map((color) => List.generate(4, (i) => color.substring(i * 2 + 1, (i + 1) * 2 + 1)))
-      .map((components) => components.map((component) => int.parse(component, radix: 16)).toList())
+      .map((color) =>
+          List.generate(4, (i) => color.substring(i * 2 + 1, (i + 1) * 2 + 1)))
+      .map((components) => components
+          .map((component) => int.parse(component, radix: 16))
+          .toList())
       .toList();
 
-  num weightedMean(int index) =>
-      (List<num>.generate(components.length, (i) => components[i][index] * weights[i])
-                  .fold(0, (a, b) => a + b) /
-              weightSum)
-          .round();
+  num weightedMean(int index) => (List<num>.generate(
+                  components.length, (i) => components[i][index] * weights[i])
+              .fold(0, (a, b) => a + b) /
+          weightSum)
+      .round();
 
   num red = weightedMean(0),
       green = weightedMean(1),

@@ -18,8 +18,9 @@ String colorNearestRGB(num red, num green, num blue) {
     num r = int.parse(hex.substring(0, 2), radix: 16),
         g = int.parse(hex.substring(2, 4), radix: 16),
         b = int.parse(hex.substring(4, 6), radix: 16);
-    num squareDistance =
-        (red - r) * (red - r) + (green - g) * (green - g) + (blue - b) * (blue - b);
+    num squareDistance = (red - r) * (red - r) +
+        (green - g) * (green - g) +
+        (blue - b) * (blue - b);
     if (minSquareDistance > squareDistance) {
       minSquareDistance = squareDistance;
       minIndex = i;

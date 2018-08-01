@@ -4,7 +4,8 @@ abstract class ColorProperty {
   /// The reg-green-blue proportion components of [color].
   static List<num> rgb(String color) {
     var hex = setAlpha(color).substring(1, 7);
-    return List.generate(3, (i) => int.parse(hex.substring(i * 2, (i + 1) * 2), radix: 16) / 255);
+    return List.generate(3,
+        (i) => int.parse(hex.substring(i * 2, (i + 1) * 2), radix: 16) / 255);
   }
 
   /// The red proportion component of [color].
@@ -57,6 +58,7 @@ abstract class ColorProperty {
   static num hueInRevolutions(String color) => _h(color) * 6;
 
   /// The hsl saturation of [color].
-  static num saturation(String color) =>
-      lightness(color) == 1 ? 0 : chroma(color) / (1 - (2 * lightness(color) - 1).abs());
+  static num saturation(String color) => lightness(color) == 1
+      ? 0
+      : chroma(color) / (1 - (2 * lightness(color) - 1).abs());
 }
