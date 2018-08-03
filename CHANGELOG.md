@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.1
+
+- Fixed several bugs that were introduced in the previous version.
+- Changed `colorNearestRGB` to a more generic and useful `colorsNearest`, which returns a list of colors in order of increasing distance. (Breaking change.)
+- Cleaned up the code: a lot more readable now.
+
 ## 0.9.0
 
 - Marked as ready for Dart 2.

@@ -35,11 +35,12 @@ String colorMix(List<String> colors, List<num> weights,
       alpha = weightedMean(3);
 
   return nearestCssColor
-      ? colorNearestRGB(red, green, blue)
+      ? colorsNearest("rgb($red, $green, $blue)").first
       : "#${[
           red,
           green,
           blue,
           alpha
-        ].map((x) => x.toInt().toRadixString(16).padLeft(2, "0")).join("")}";
+        ].map((x) => x.toInt().toRadixString(16).padLeft(2, "0")).join("")}"
+          .toUpperCase();
 }

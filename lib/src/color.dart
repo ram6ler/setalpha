@@ -1,8 +1,8 @@
 part of setalpha;
 
-/// Convenience class for referencing CSS colors.
+/// Convenience class for accessing CSS colors.
 abstract class Color {
-  static const String none = "rgba(0,0,0,0)", transparent = none;
+  static const String none = "rgba(0,0,0,0)";
   static const String antiqueWhite = "antiquewhite",
       aqua = "aqua",
       aquamarine = "aquamarine",
