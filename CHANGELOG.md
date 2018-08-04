@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.2
+
+Dart pub issues (?)
+
 ## 0.9.1
 
 - Fixed several bugs that were introduced in the previous version.
