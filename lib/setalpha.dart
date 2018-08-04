@@ -1,7 +1,5 @@
 library setalpha;
 
-import "dart:math" show pi;
-
 part 'src/helpers.dart';
 part 'src/color.dart';
 part 'src/set-alpha.dart';

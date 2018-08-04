@@ -2,13 +2,14 @@ part of setalpha;
 
 final _rxRgb = RegExp(r"[^0-9,.]"), _rxHex = RegExp(r"[^#0-9a-fA-F]");
 
+String _byteToHexString(num x) => x.round().toRadixString(16).padLeft(2, "0");
+
 String _rgbToD8Hex(String color) {
   var split = color.replaceAll(_rxRgb, "").split(",").map(num.parse).toList();
   if (split.length != 3 || split.any((x) => x < 0 || x > 255.5))
     throw Exception("Unrecognized color: '$color'.");
 
-  return "#${split.map((value) => value.round().toRadixString(16).padLeft(2, "0")).join()}FF"
-      .toUpperCase();
+  return "#${split.map(_byteToHexString).join()}FF".toUpperCase();
 }
 
 String _rgbaToD8Hex(String color) {
@@ -17,7 +18,7 @@ String _rgbaToD8Hex(String color) {
       split.sublist(0, 3).any((x) => x < 0 || x > 255.5) ||
       split.last < 0 ||
       split.last > 1) throw Exception("Unrecognized color: '$color'.");
-  return "#${split.sublist(0, 3).map((value) => value.round().toRadixString(16).padLeft(2, "0")).join()}${(split.last * 255).round().toRadixString(16).padLeft(2, "0")}"
+  return "#${split.sublist(0, 3).map(_byteToHexString).join()}${_byteToHexString(split.last * 255)}"
       .toUpperCase();
 }
 
@@ -43,6 +44,15 @@ String _d6HexToD8Hex(String color) {
 
   return "#${List.generate(3, (i) => "${color.substring(i * 2 + 1, i * 2 + 3)}").join()}FF"
       .toUpperCase();
+}
+
+String _hslaToD8Hex(String color) {
+  var values = color.replaceAll(_rxRgb, "").split(",").map(num.parse).toList();
+
+  if (values.length != 4) throw Exception("Unrecognized color: '$color'.");
+
+  var opaque = _hslToD8Hex("hsl(${values.sublist(0, 3).join("")})");
+  return "${opaque.substring(0, 7)}${_byteToHexString(values.last * 255)}";
 }
 
 String _hslToD8Hex(String color) {
@@ -90,10 +100,6 @@ String _hslToD8Hex(String color) {
 
   var m = l - c / 2;
 
-  return "#${[
-    r,
-    g,
-    b
-  ].map((value) => ((value + m) * 255).round().toRadixString(16).padLeft(2, "0")).join()}FF"
+  return "#${[r, g, b].map((value) => _byteToHexString((value + m) * 255))}FF"
       .toUpperCase();
 }
