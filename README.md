@@ -16,10 +16,10 @@ void main() {
 
   // Also works for other hex and hsl expressions...
   print(setAlpha("#6495ED", 0.5));
-  // # #6495ED80
+  // #6495ED80
 
   print(setAlpha("hsl(218.54deg, 79%, 66%)", 0.5));
-  // # #6495ED80
+  // #6495ED80
 
   // Which web color is nearest cornflourblue in RGB-space?
   print(colorsNearest(Color.cornflowerBlue, 2).last);
