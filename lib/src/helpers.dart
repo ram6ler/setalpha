@@ -99,7 +99,11 @@ String _hslToD8Hex(String color) {
   }
 
   var m = l - c / 2;
+  var result = "#${[
+    r,
+    g,
+    b
+  ].map((value) => _byteToHexString((value + m) * 255)).join()}FF";
 
-  return "#${[r, g, b].map((value) => _byteToHexString((value + m) * 255))}FF"
-      .toUpperCase();
+  return result.toUpperCase();
 }
