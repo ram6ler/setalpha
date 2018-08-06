@@ -19,6 +19,7 @@ void simpleDivs(Iterable<String> colors) {
 }
 
 void main() {
+  print(setAlpha("hsla(120deg,50%,50%,0.5)"));
   for (var f in [/*testAll,*/ testHues, testNearest, testMix, testAlpha]) f();
 }
 

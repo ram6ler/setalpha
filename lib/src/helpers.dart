@@ -51,7 +51,7 @@ String _hslaToD8Hex(String color) {
 
   if (values.length != 4) throw Exception("Unrecognized color: '$color'.");
 
-  var opaque = _hslToD8Hex("hsl(${values.sublist(0, 3).join("")})");
+  var opaque = _hslToD8Hex("hsl(${values.sublist(0, 3).join(",")})");
   return "${opaque.substring(0, 7)}${_byteToHexString(values.last * 255)}";
 }
 
