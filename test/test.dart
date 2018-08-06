@@ -30,13 +30,13 @@ void testAll() {
 void testHues() {
   print("<h1>Similar hues</h1>");
   print("<h2>maroon</h2>");
-  simpleDivs(colorsWithSimilarHueTo(Color.maroon));
+  simpleDivs(colorsNearestHSL(Color.maroon));
   print("<h2>turquoise</h2>");
-  simpleDivs(colorsWithSimilarHueTo(Color.turquoise));
+  simpleDivs(colorsNearestHSL(Color.turquoise));
   print("<h2>thistle</h2>");
-  simpleDivs(colorsWithSimilarHueTo(Color.thistle));
+  simpleDivs(colorsNearestHSL(Color.thistle));
   print("<h2>violet</h2>");
-  simpleDivs(colorsWithSimilarHueTo(Color.violet));
+  simpleDivs(colorsNearestHSL(Color.violet));
 }
 
 void testMix() {
@@ -58,11 +58,11 @@ void testAlpha() {
 void testNearest() {
   print("<h1>Nearest colors</h1>");
   print("<h2>maroon</h2>");
-  simpleDivs(colorsNearest(Color.maroon));
+  simpleDivs(colorsNearestRGB(Color.maroon));
   print("<h2>turquoise</h2>");
-  simpleDivs(colorsNearest(Color.turquoise));
+  simpleDivs(colorsNearestRGB(Color.turquoise));
   print("<h2>thistle</h2>");
-  simpleDivs(colorsNearest(Color.thistle));
+  simpleDivs(colorsNearestRGB(Color.thistle));
   print("<h2>violet</h2>");
-  simpleDivs(colorsNearest(Color.violet));
+  simpleDivs(colorsNearestRGB(Color.violet));
 }

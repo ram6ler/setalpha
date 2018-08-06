@@ -35,7 +35,7 @@ String colorMix(List<String> colors, List<num> weights,
       alpha = weightedMean(3);
 
   return nearestCssColor
-      ? colorsNearest("rgb($red, $green, $blue)").first
+      ? colorsNearestRGB("rgb($red, $green, $blue)").first
       : "#${[
           red,
           green,

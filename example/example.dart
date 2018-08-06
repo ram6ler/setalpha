@@ -13,7 +13,7 @@ void main() {
   // #6495ED80
 
   // Which web color is nearest cornflourblue in RGB-space?
-  print(colorsNearest(Color.cornflowerBlue, 2).last);
+  print(colorsNearestRGB(Color.cornflowerBlue, 2).last);
   // mediumslateblue
 
   // Let's mix 3 parts cornflowerblue with 2 parts maroon...

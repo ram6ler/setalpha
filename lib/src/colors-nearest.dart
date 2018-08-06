@@ -1,7 +1,7 @@
 part of setalpha;
 
 /// The [n] css colors that are nearest in rgb space to [color].
-List<String> colorsNearest(String color, [int n = 3]) {
+List<String> colorsNearestRGB(String color, [int n = 3]) {
   var rgb = ColorProperty.rgba(color),
       red = rgb[0],
       green = rgb[1],
@@ -23,8 +23,8 @@ List<String> colorsNearest(String color, [int n = 3]) {
       .toList();
 }
 
-/// [n] css colors that have a hue similar to that of [color].
-List<String> colorsWithSimilarHueTo(String color, [int n = 3]) {
+/// The [n] css colors that are nearest in hsl space to [color].
+List<String> colorsNearestHSL(String color, [int n = 3]) {
   var hue = ColorProperty.hueInDegrees(color);
   if (hue == null) throw Exception("Hue not defined for $color.");
   var saturation = ColorProperty.saturation(color),
@@ -42,7 +42,7 @@ List<String> colorsWithSimilarHueTo(String color, [int n = 3]) {
             l = ColorProperty.lightness(key) - lightness;
         return <String, Comparable>{
           "color": key,
-          "distance": 5 * dp * dp + s * s + 3 * l * l
+          "distance": dp * dp + s * s * l * l
         };
       })
       .where((d) => d != null)
