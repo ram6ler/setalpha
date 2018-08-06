@@ -9,7 +9,7 @@ abstract class ColorProperty {
       rgba(color).map((c) => c / 255.0).toList();
 
   static List<num> rgba(String color) {
-    var hex = setAlpha(color);
+    var hex = setAlpha(color).substring(1);
     return List.generate(
         4, (i) => int.parse(hex.substring(i * 2, (i + 1) * 2), radix: 16));
   }
