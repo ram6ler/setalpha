@@ -6,7 +6,7 @@ part of setalpha;
 abstract class ColorProperty {
   /// The red-green-blue proportion components of [color].
   static List<double> rgbProportions(String color) =>
-      rgba(color).map((c) => c / 255.0).toList();
+      rgba(color).sublist(0, 3).map((c) => c / 255.0).toList();
 
   static List<num> rgba(String color) {
     var hex = setAlpha(color).substring(1);
