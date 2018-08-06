@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.3
+
+Small additions and amendments to the `ColorProperties` class.
+
 ## 0.9.2
 
 Dart pub issues (?)

@@ -6,36 +6,48 @@ part of setalpha;
 abstract class ColorProperty {
   /// The red-green-blue proportion components of [color].
   static List<double> rgbProportions(String color) =>
-      rgb(color).map((c) => c / 255.0).toList();
+      rgba(color).map((c) => c / 255.0).toList();
 
-  static List<num> rgb(String color) {
-    var hex = setAlpha(color).substring(1, 7);
+  static List<num> rgba(String color) {
+    var hex = setAlpha(color);
     return List.generate(
-        3, (i) => int.parse(hex.substring(i * 2, (i + 1) * 2), radix: 16));
+        4, (i) => int.parse(hex.substring(i * 2, (i + 1) * 2), radix: 16));
   }
 
   static num _p(num p) => (p * 10000).round() / 100;
 
+  /// The red component of [color].
+  static num red(String color) => rgba(color)[0];
+
   /// The red proportion component of [color].
-  static num red(String color) => rgbProportions(color)[0];
+  static num redAsProportion(String color) => rgbProportions(color)[0];
 
   /// The red proportion component of [color], expressed
   /// as a percentage.
-  static num redAsPercent(String color) => _p(red(color));
+  static num redAsPercent(String color) => _p(redAsProportion(color));
+
+  /// The green component of [color].
+  static num green(String color) => rgba(color)[1];
 
   /// The green proportion component of [color].
-  static num green(String color) => rgbProportions(color)[1];
+  static num greenAsProportion(String color) => rgbProportions(color)[1];
 
   /// The green proportion component of [color], expressed
   /// as a percentage.
-  static num greenAsPercent(String color) => _p(green(color));
+  static num greenAsPercent(String color) => _p(greenAsProportion(color));
+
+  /// The blue component of [color].
+  static num blue(String color) => rgba(color)[2];
 
   /// The blue proportion component of [color].
-  static num blue(String color) => rgbProportions(color)[2];
+  static num blueAsProportion(String color) => rgbProportions(color)[2];
 
   /// The blue proportion component of [color], expressed
   /// as a percentage.
-  static num blueAsPercent(String color) => _p(blue(color));
+  static num blueAsPercent(String color) => _p(blueAsProportion(color));
+
+  /// The alpha level of [color].
+  static num alpha(color) => rgba(color)[3] / 255;
 
   /// The intensity, or mean proportion component, of [color].
   static num intensity(String color) =>
@@ -93,11 +105,13 @@ abstract class ColorProperty {
     if (c == 0) return null;
     var m = max(color);
 
-    if (m == red(color)) return ((green(color) - blue(color)) / c) % 6;
+    if (m == redAsProportion(color))
+      return ((greenAsProportion(color) - blueAsProportion(color)) / c) % 6;
 
-    if (m == green(color)) return (blue(color) - red(color)) / c + 2;
+    if (m == greenAsProportion(color))
+      return (blueAsProportion(color) - redAsProportion(color)) / c + 2;
 
-    return (red(color) - green(color)) / c + 4;
+    return (redAsProportion(color) - greenAsProportion(color)) / c + 4;
   }
 
   /// The hsl hue, or direction, of [color], in degrees.
