@@ -42,7 +42,7 @@ List<String> colorsNearestHSL(String color, [int n = 3]) {
             l = ColorProperty.lightness(key) - lightness;
         return <String, Comparable>{
           "color": key,
-          "distance": dp * dp + s * s * l * l
+          "distance": dp * dp + s * s + l * l
         };
       })
       .where((d) => d != null)
