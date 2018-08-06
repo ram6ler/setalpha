@@ -7,7 +7,7 @@ void simpleDivs(Iterable<String> colors) {
     var h = ColorProperty.hueInDegrees(color),
         s = ColorProperty.saturationAsPercent(color),
         l = ColorProperty.lightnessAsPercent(color),
-        rgb = ColorProperty.rgb(color),
+        rgb = ColorProperty.rgba(color),
         r = rgb[0],
         g = rgb[1],
         b = rgb[2],

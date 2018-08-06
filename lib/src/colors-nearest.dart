@@ -2,13 +2,13 @@ part of setalpha;
 
 /// The [n] css colors that are nearest in rgb space to [color].
 List<String> colorsNearest(String color, [int n = 3]) {
-  var rgb = ColorProperty.rgb(color),
+  var rgb = ColorProperty.rgba(color),
       red = rgb[0],
       green = rgb[1],
       blue = rgb[2];
 
   var colorDistances = Color._colorData.keys.map((key) {
-    var rgb = ColorProperty.rgb(key),
+    var rgb = ColorProperty.rgba(key),
         r = rgb[0] - red,
         g = rgb[1] - green,
         b = rgb[2] - blue,
