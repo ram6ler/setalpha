@@ -31,6 +31,12 @@ void main() {
 }
 ```
 
+## Demos
+
+* [Color Breakdown](https://color-breakdown.netlify.com/)
+
+ A little app that demonstrates color manipulation, component data, finding similar colors and setting alpha levels using setalpha.
+
 ## Features and bugs
 
 Please file feature requests and bugs at the [issue tracker][tracker].

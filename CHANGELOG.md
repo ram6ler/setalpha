@@ -2,7 +2,13 @@
 
 ## 0.9.3
 
-Small additions and amendments to the `ColorProperties` class.
+- Small additions and amendments to the `ColorProperties` class.
+
+- Fixed a bug in the interpretation of hsla expressions.
+
+- The `colorsNearest` function has been split into `colorsNearestRGB` and `colorsNearestHSL` that respectively return the nearest colors in RGB-space and HSL-space.
+
+- Added a convenience class `Crayon` that provides access to the *crayon* colors in the html color picker.
 
 ## 0.9.2
 
