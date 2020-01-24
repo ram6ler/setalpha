@@ -6,10 +6,10 @@ part of setalpha;
 abstract class ColorProperty {
   /// The red-green-blue proportion components of [color].
   static List<double> rgbProportions(String color) =>
-      rgba(color).sublist(0, 3).map((c) => c / 255.0).toList();
+      [...rgba(color).sublist(0, 3).map((c) => c / 255.0)];
 
   static List<num> rgba(String color) {
-    var hex = setAlpha(color).substring(1);
+    final hex = setAlpha(color).substring(1);
     return List.generate(
         4, (i) => int.parse(hex.substring(i * 2, (i + 1) * 2), radix: 16));
   }
@@ -90,7 +90,7 @@ abstract class ColorProperty {
   /// The luma, or mean proportion component weighted by
   /// human perception of lightness, of [color].
   static num luma(String color) {
-    var components = rgbProportions(color);
+    final components = rgbProportions(color);
     return List.generate(3, (i) => components[i] * [0.299, 0.587, 0.114][i])
         .fold(0, (a, b) => a + b);
   }
@@ -101,29 +101,31 @@ abstract class ColorProperty {
   static num lumaAsPercent(String color) => _p(luma(color));
 
   static num _h(String color) {
-    var c = chroma(color);
+    final c = chroma(color);
     if (c == 0) return null;
-    var m = max(color);
+    final m = max(color);
 
-    if (m == redAsProportion(color))
+    if (m == redAsProportion(color)) {
       return ((greenAsProportion(color) - blueAsProportion(color)) / c) % 6;
+    }
 
-    if (m == greenAsProportion(color))
+    if (m == greenAsProportion(color)) {
       return (blueAsProportion(color) - redAsProportion(color)) / c + 2;
+    }
 
     return (redAsProportion(color) - greenAsProportion(color)) / c + 4;
   }
 
   /// The hsl hue, or direction, of [color], in degrees.
   static num hueInDegrees(String color) {
-    var h = _h(color);
+    final h = _h(color);
     if (h == null) return null;
     return 60 * h;
   }
 
   /// The hsl saturation of [color].
   static num saturation(String color) {
-    var l = lightness(color);
+    final l = lightness(color);
     if (l == 0 || l == 1) return 0;
     return chroma(color) / (1 - (2 * l - 1).abs());
   }

@@ -1,5 +1,9 @@
 part of setalpha;
 
+extension SetAlpha on String {
+  String toHexWithAlpha(num alpha) => setAlpha(this, alpha);
+}
+
 /// Returns a color with a set [alpha].
 ///
 /// Takes in a legal css [color] (e.g. "violet", "#abc",
@@ -39,8 +43,9 @@ String setAlpha(String color, [num alpha]) {
     d8Hex = _hslToD8Hex(color);
   } else {
     color = color.toLowerCase();
-    if (!Color._colorData.containsKey(color))
+    if (!Color._colorData.containsKey(color)) {
       throw Exception("Unrecognized color: '$color'.");
+    }
 
     d8Hex = _d6HexToD8Hex("#${Color._colorData[color]}");
   }

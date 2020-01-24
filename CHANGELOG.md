@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0
+
+- Housecleaning.
+
+- Extension on strings.
+
 ## 0.9.3
 
 - Small additions and amendments to the `ColorProperties` class.

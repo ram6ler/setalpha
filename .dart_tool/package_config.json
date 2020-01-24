@@ -1,0 +1,14 @@
+{
+  "configVersion": 2,
+  "packages": [
+    {
+      "name": "setalpha",
+      "rootUri": "../",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    }
+  ],
+  "generated": "2020-01-24T05:17:37.547149Z",
+  "generator": "pub",
+  "generatorVersion": "2.7.1"
+}
