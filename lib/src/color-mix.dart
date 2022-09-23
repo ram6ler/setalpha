@@ -26,7 +26,7 @@ String colorMix(List<String> colors, List<num> weights,
 
   num weightedMean(int index) => (List<num>.generate(
                   components.length, (i) => components[i][index] * weights[i])
-              .fold(0, (a, b) => a + b) /
+              .fold(0.0, (a, b) => a + b) /
           weightSum)
       .round();
 

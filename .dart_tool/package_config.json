@@ -5,10 +5,10 @@
       "name": "setalpha",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.7"
+      "languageVersion": "2.18"
     }
   ],
-  "generated": "2020-01-26T01:09:39.611618Z",
+  "generated": "2022-09-23T08:58:57.798255Z",
   "generator": "pub",
-  "generatorVersion": "2.7.1"
+  "generatorVersion": "2.18.1"
 }

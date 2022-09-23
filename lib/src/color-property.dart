@@ -51,7 +51,7 @@ abstract class ColorProperty {
 
   /// The intensity, or mean proportion component, of [color].
   static num intensity(String color) =>
-      rgbProportions(color).fold(0, (a, b) => a + b) / 3;
+      rgbProportions(color).fold(0.0, (a, b) => a + b) / 3;
 
   /// The intensity, or mean proportion component, of [color],
   /// expressed as a percentage.
@@ -100,7 +100,7 @@ abstract class ColorProperty {
   /// as a percentage.
   static num lumaAsPercent(String color) => _p(luma(color));
 
-  static num _h(String color) {
+  static num? _h(String color) {
     final c = chroma(color);
     if (c == 0) return null;
     final m = max(color);
@@ -117,7 +117,7 @@ abstract class ColorProperty {
   }
 
   /// The hsl hue, or direction, of [color], in degrees.
-  static num hueInDegrees(String color) {
+  static num? hueInDegrees(String color) {
     final h = _h(color);
     if (h == null) return null;
     return 60 * h;

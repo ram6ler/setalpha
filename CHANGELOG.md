@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- Null safe.
+
 ## 1.0.0
 
 - Housecleaning.

@@ -13,7 +13,7 @@ extension SetAlpha on String {
 /// If [alpha] is set, it overrides any alpha level that may
 /// be contained in [color].
 ///
-String setAlpha(String color, [num alpha]) {
+String setAlpha(String color, [num? alpha]) {
   color = color.trim().toUpperCase();
   String d8Hex;
   if (color[0] == "#") {
