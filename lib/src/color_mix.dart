@@ -1,16 +1,17 @@
-part of setalpha;
+import "set_alpha.dart" show setAlpha;
 
 /// Returns the color that represents the weighted mean of a list of colors.
 ///
 /// Example:
 ///
-///     // Two parts blue to one part red:
-///     String mix = colorMix([Color.blue, Color.red], [2, 1]);
-///
+/// ```dart
+/// // Two parts blue to one part red:
+/// String mix = colorMix([Color.blue, Color.red], [2, 1]);
+/// ```
 String colorMix(List<String> colors, List<num> weights,
     {bool nearestCssColor = false}) {
   if (weights.length != colors.length) {
-    throw Exception('A weight should be provided for each color.');
+    throw Exception("A weight should be provided for each color.");
   }
 
   num weightSum = weights.fold(0, (a, b) => a + b);
@@ -35,13 +36,5 @@ String colorMix(List<String> colors, List<num> weights,
       blue = weightedMean(2),
       alpha = weightedMean(3);
 
-  return nearestCssColor
-      ? colorsNearestRGB('rgb($red, $green, $blue)').first
-      : '#${[
-          red,
-          green,
-          blue,
-          alpha
-        ].map((x) => x.toInt().toRadixString(16).padLeft(2, '0')).join('')}'
-          .toUpperCase();
+  return setAlpha("rgb($red,$green,$blue)", alpha / 255);
 }

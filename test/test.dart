@@ -2,20 +2,27 @@ import 'package:setalpha/setalpha.dart';
 
 void simpleDivs(Iterable<String> colors) {
   print('<div class="container">');
-  for (var color in colors) {
+  for (final color in colors) {
     print('<div class="group"><div class="color">($color)</div>');
-    var luma = ColorProperty.luma(color);
-    var h = ColorProperty.hueInDegrees(color),
-        s = ColorProperty.saturationAsPercent(color),
-        l = ColorProperty.lightnessAsPercent(color),
-        rgb = ColorProperty.rgba(color),
-        r = rgb[0],
-        g = rgb[1],
-        b = rgb[2],
+    final ps = ColorProperties(color),
+        luma = ps.luma,
+        h = ps.hueInDegrees,
+        s = ps.saturationAsPercent,
+        l = ps.lightnessAsPercent,
+        r = ps.red,
+        g = ps.green,
+        b = ps.blue,
         hex = setAlpha(color);
 
-    print(
-        '<div class="sample" style="background: $color; color: ${luma > 0.5 ? 'black' : 'white'};">$color<br>rgb($r,$g,$b)<br>${h == null ? 'null' : 'hsl(${h}deg, $s%, $l%)'}<br>${hex.substring(0, 7)}</div></div>');
+    print('''
+  <div class="sample" style="background: $color; color: ${luma > 0.6 ? 'black' : 'white'};">
+    $color<br>
+    rgb($r,$g,$b)<br>
+    ${h == null ? 'null' : 'hsl(${h}deg, $s%, $l%)'}<br>
+    ${hex.substring(0, 7)}
+  </div>
+</div>
+''');
   }
   print('</div>');
 }
@@ -28,7 +35,6 @@ void main() {
     testNearest,
     testMix,
     testAlpha,
-    testExtensions
   ]) f();
 }
 
@@ -104,10 +110,4 @@ void testNearest() {
   simpleDivs(colorsNearestRGB(Color.thistle));
   print('<h2>violet</h2>');
   simpleDivs(colorsNearestRGB(Color.violet));
-}
-
-void testExtensions() {
-  final color = 'lightblue', halfAlpha = color.toHexWithAlpha(0.5);
-  print('<h1>Extensions</h1>');
-  simpleDivs([color, halfAlpha]);
 }

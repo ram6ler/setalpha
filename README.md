@@ -13,11 +13,78 @@ the alpha levels of given colors and mixing new colors.
 * [Falco Shapes](https://falco-shapes.netlify.com/)
 
 A little combinatorics game based on Marsha Falco's game of *Set*;
-setalpha was used to color the pieces on the board. 
+setalpha was used to color the pieces on the board.
 
 ## Usage
 
 Simple usage examples:  
+
+* Conveniently get properties of a color.
+
+```dart
+final ps = ColorProperties(Color.cornflowerBlue);
+  print("""
+         Color: $ps
+
+           Red: ${ps.red}
+         Green: ${ps.green}
+          Blue: ${ps.blue}
+         Alpha: ${ps.alpha}
+        Chroma: ${ps.chroma}
+           Hue: ${ps.hueInDegrees}
+     Intensity: ${ps.intensity}
+     Lightness: ${ps.lightness}
+    Saturation: ${ps.saturation}
+  """);
+```
+
+```text
+         Color: #6495EDFF
+
+           Red: 100
+         Green: 149
+          Blue: 237
+         Alpha: 1.0
+        Chroma: 0.5372549019607844
+           Hue: 218.54014598540147
+     Intensity: 0.6352941176470589
+     Lightness: 0.6607843137254902
+    Saturation: 0.7919075144508672
+```
+
+* Also works with hex, rgb, rgba, hsl, hsla expressions:
+
+```dart
+  // Change the color the ColorProperties instance points to...
+  ps.color = "rgba(50,150,200,0.75)";
+  print("""
+         Color: $ps
+
+           Red: ${ps.red},
+         Green: ${ps.green}
+          Blue: ${ps.blue}
+         Alpha: ${ps.alpha}
+        Chroma: ${ps.chroma}
+           Hue: ${ps.hueInDegrees}
+     Intensity: ${ps.intensity}
+     Lightness: ${ps.lightness}
+    Saturation: ${ps.saturation}
+  """);
+```
+
+```text
+         Color: #3296C8BF
+
+           Red: 50,
+         Green: 150
+          Blue: 200
+         Alpha: 0.7490196078431373
+        Chroma: 0.5882352941176471
+           Hue: 199.99999999999997
+     Intensity: 0.5228758169934641
+     Lightness: 0.49019607843137253
+    Saturation: 0.6000000000000001
+```
 
 * Get `cornflowerblue` with an alpha value of 0.5.
 
@@ -55,7 +122,7 @@ mediumslateblue
 royalblue
 ```
 
-* ... and in HSL-space? 
+* ... and in HSL-space?
 
 ```dart
 for (final neighbor in colorsNearestHSL(Color.cornflowerBlue, 3)) {

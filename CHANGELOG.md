@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0
+
+- Updated for Dart 3.
+- Restructured the project to better accord with dart.dev guidelines.
+- Made the properties class `ColorProperties` instantiable and exposed it to the user.
+- Improved documentation.
+
 ## 2.0.0
 
 - Null safe.
@@ -53,5 +60,3 @@ Now also supports hsl expressions as input to function `setAlpha`.
 
 - Set the alpha level of CSS colors.
 - Supports color name, hex values, rgb (and rgba) expressions as input to the function `setAlpha`.
-
-
