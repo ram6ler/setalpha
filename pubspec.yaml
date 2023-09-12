@@ -1,7 +1,7 @@
 name: setalpha
 description: A convenience package for setting and accessing web colors, adjusting the alpha levels of given colors and mixing new colors.
 version: 3.0.0
-homepage: https://bitbucket.org/ram6ler/setalpha/wiki/Home
+homepage: https://github.com/ram6ler/setalpha
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
